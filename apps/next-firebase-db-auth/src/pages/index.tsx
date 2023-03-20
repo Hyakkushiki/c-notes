@@ -4,10 +4,12 @@ import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import NavBar from '@/components/topNavbar'
 import NotesMain from '@/components/notesMain'
+import NotesGrid from '@/components/notesGrid'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  // h-[calc(100vh_-_4rem)]
   return (
     <>
       <Head>
@@ -16,13 +18,15 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <NavBar />
-      <main className={styles.main}>
-        <NotesMain />
-        <h1 className="text-3xl font-bold underline text-red-400">
-          Hello world!
-        </h1>
-      </main>
+
+      <div className='flex flex-col h-screen w-screen'>
+        <NavBar />
+        <main className='flex flex-row justify-between items-center p-4 w-full h-[calc(100vh_-_4rem)]'>
+          {/* <NotesMain /> */}
+          <NotesGrid />
+
+        </main>
+      </div>
     </>
   )
 }
