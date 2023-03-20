@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
-import styles from '@/styles/Home.module.css'
+// import styles from '@/styles/Home.module.css'
 import NavBar from '@/components/topNavbar'
 import NotesMain from '@/components/notesMain'
 import NotesGrid from '@/components/notesGrid'
@@ -21,7 +21,7 @@ export default function Home() {
 
       <div className='flex flex-col h-screen w-screen'>
         <NavBar />
-        <main className='flex flex-row justify-between items-center p-4 w-full h-[calc(100vh_-_4rem)]'>
+        <main className='flex flex-row justify-between p-4 w-full h-[calc(100vh_-_4rem)]'>
           {/* <NotesMain /> */}
           <NotesGrid />
 
