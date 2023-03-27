@@ -5,11 +5,21 @@ import { Inter } from 'next/font/google'
 import NavBar from '@/components/topNavbar'
 import NotesMain from '@/components/notesMain'
 import NotesGrid from '@/components/notesGrid'
+import { useState } from 'react'
+import LoggedIn from './auth/logincheck'
+import NoteOperations from '@/components/NoteOperations'
+import NoteDetails from '@/components/NoteDetails.tsx'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
   // h-[calc(100vh_-_4rem)]
+
+  const [ID, setID] = useState<string | null>(null);
+  const getSingleNote = (id: string) => {
+    setID(id);
+  };
+
   return (
     <>
       <Head>
@@ -23,7 +33,15 @@ export default function Home() {
         <NavBar />
         <main className='flex flex-row justify-between p-4 w-full h-[calc(100vh_-_4rem)]'>
           {/* <NotesMain /> */}
-          <NotesGrid notesArray={[]} />
+          <div className='w-80'>
+            <LoggedIn />
+            <NoteOperations getSingleNote={getSingleNote} />
+          </div>
+          <div className=''>
+            <NoteDetails ID={ID} />
+          </div>
+
+          {/* <NotesGrid notesArray={[]} /> */}
 
         </main>
       </div>
