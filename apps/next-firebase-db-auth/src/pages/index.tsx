@@ -23,7 +23,7 @@ export default function Home() {
         <NavBar />
         <main className='flex flex-row justify-between p-4 w-full h-[calc(100vh_-_4rem)]'>
           {/* <NotesMain /> */}
-          <NotesGrid />
+          <NotesGrid notesArray={[]} />
 
         </main>
       </div>
