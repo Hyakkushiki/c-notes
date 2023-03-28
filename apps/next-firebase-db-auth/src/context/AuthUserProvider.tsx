@@ -39,7 +39,8 @@ const AuthUserContext = createContext<AuthContextType>({
   authUser: null,
   loading: true,
   SignInWithEmailAndPassword: async (email: string, password: string) =>
-    signInWithEmailAndPassword(firebaseAuth, email, password),
+  useFirebaseAuth().SignInWithEmailAndPassword(email, password),
+    // signInWithEmailAndPassword(firebaseAuth, email, password),
   CreateUserWithEmailAndPassword: async (email: string, password: string) =>
     createUserWithEmailAndPassword(firebaseAuth, email, password),
   signOut: async () => signOut(firebaseAuth),

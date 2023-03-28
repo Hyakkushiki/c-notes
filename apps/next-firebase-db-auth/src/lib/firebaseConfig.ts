@@ -14,6 +14,8 @@ import {
   setPersistence,
   browserLocalPersistence,
   browserSessionPersistence,
+  GithubAuthProvider,
+  linkWithRedirect,
 } from "firebase/auth";
 import { getAnalytics } from "firebase/analytics";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -50,6 +52,13 @@ const FirebaseCredentials = {
 //   measurementId: 'gg', //process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 // };
 
+// https://firebase.google.com/docs/auth/web/account-linking
+// const githubProvider = new GithubAuthProvider();
+// const auth = getAuth();
+// linkWithRedirect(auth.currentUser, githubProvider)
+//   .then(/* ... */)
+//   .catch(/* ... */);
+
 // Initialize Firebase
 // export const firebaseApp = initializeApp(firebaseConfig);
 export const firebaseApp = initializeApp(FirebaseCredentials);
@@ -58,10 +67,10 @@ export const firebaseAuth = getAuth(firebaseApp);
 // export const analytics = getAnalytics(app);
 export const firebaseDB = getFirestore(firebaseApp);
 
-// setPersistence(firebaseAuth, browserSessionPersistence)
-//   .then(() => {
-//     console.log("Session persistence enabled");
-//   })
-//   .catch((error) => {
-//     console.error("Error enabling session persistence:", error);
-//   });
+setPersistence(firebaseAuth, browserSessionPersistence)
+  .then(() => {
+    console.log("Session persistence enabled");
+  })
+  .catch((error) => {
+    console.error("Error enabling session persistence:", error);
+  });

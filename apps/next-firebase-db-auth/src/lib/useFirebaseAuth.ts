@@ -56,7 +56,7 @@ export default function useFirebaseAuth() {
     const unsubscribe = firebaseAuth.onAuthStateChanged(authStateChanged);
     return () => unsubscribe();
   }, []);
-
+// console.log('og auth:', authUser)
   return {
     authUser,
     loading,

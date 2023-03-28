@@ -6,14 +6,16 @@ import NavBar from '@/components/topNavbar'
 import NotesMain from '@/components/notesMain'
 import NotesGrid from '@/components/notesGrid'
 import { useState } from 'react'
-import LoggedIn from './auth/logincheck'
+import LoginCheck from './auth/loginCheck'
 import NoteOperations from '@/components/NoteOperations'
 import NoteDetails from '@/components/NoteDetails.tsx'
+import { UseAuthContext } from '@/context/AuthUserProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
   // h-[calc(100vh_-_4rem)]
+  const { authUser, loading, signOut } = UseAuthContext();
 
   const [ID, setID] = useState<string | null>(null);
   const getSingleNote = (id: string) => {
@@ -30,11 +32,12 @@ export default function Home() {
       </Head>
 
       <div className='flex flex-col h-screen w-screen'>
-        <NavBar />
-        <main className='flex flex-row justify-between p-4 w-full h-[calc(100vh_-_4rem)]'>
+        {/* <NavBar /> */}
+        <div className='flex flex-row justify-between p-4 w-full h-[calc(100vh_-_4rem)]'>
           {/* <NotesMain /> */}
           <div className='w-80'>
-            <LoggedIn />
+            <p>{authUser?.email}</p>
+            {/* <LoginCheck /> */}
             <NoteOperations getSingleNote={getSingleNote} />
           </div>
           <div className=''>
@@ -43,7 +46,7 @@ export default function Home() {
 
           {/* <NotesGrid notesArray={[]} /> */}
 
-        </main>
+        </div>
       </div>
     </>
   )

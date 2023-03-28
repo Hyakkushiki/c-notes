@@ -6,7 +6,7 @@ import LoginPage from "./loginPage";
 
 // import LoginPage from "./loginPage";
 
-const LoggedIn = () => {
+const LoginCheck = () => {
   const { authUser, loading, signOut } = UseAuthContext();
   const router = useRouter();
 
@@ -26,11 +26,11 @@ const LoggedIn = () => {
     if (!loading) {
       // Authentication state is still loading
       if (!!authUser) {
-        console.log("loading:::", loading, "authUser:::", authUser);
+        // console.log("loading:::", loading, "authUser:::", authUser);
         // User is signed in
         router.push("/");
       } else {
-        console.log("loading:2::", loading, "authUser:::", authUser);
+        // console.log("loading:2::", loading, "authUser:::", authUser);
         // User is signed out
         router.push("/auth/loginPage");
       }
@@ -51,4 +51,4 @@ const LoggedIn = () => {
   );
 };
 
-export default LoggedIn;
+export default LoginCheck;
