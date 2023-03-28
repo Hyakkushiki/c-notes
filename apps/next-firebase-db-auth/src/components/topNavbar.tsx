@@ -95,11 +95,13 @@ export default function NavBar() {
             {/* <!-- Profile dropdown --> */}
             <div className="relative ml-3 flex space-x-4 items-center justify-center">
               <DevLogin />
-              <button
+
+              <a
                 type="button"
                 className="w-12 h-12 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                 id="new-note-button"
                 onClick={() => {}}
+                href="/newNote"
               >
                 <span className="sr-only">New Note</span>
                 <svg
@@ -114,7 +116,7 @@ export default function NavBar() {
                     clipRule="evenodd"
                   ></path>
                 </svg>
-              </button>
+              </a>
 
               <button
                 type="button"
@@ -139,6 +141,19 @@ export default function NavBar() {
               >
                 {/* <a href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" id="user-menu-item-0">Your Profile</a>
                                 <a href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" id="user-menu-item-1">Settings</a> */}
+                {!!authUser?.email ? (
+                  <p
+                    onBlur={() => setUserMenuIsOpen(false)}
+                    className="block px-4 py-2 text-sm text-gray-700 bg-blue-100"
+                    role="menuitem"
+                    id="user-menu-item-2"
+                  >
+                    {authUser?.email}
+                  </p>
+                ) : (
+                  <></>
+                )}
+
                 <a
                   href="/auth/loginPage"
                   onBlur={() => setUserMenuIsOpen(false)}
@@ -148,6 +163,7 @@ export default function NavBar() {
                 >
                   Sign In
                 </a>
+
                 <a
                   href="/auth/loginPage"
                   onClick={() => signOut()}

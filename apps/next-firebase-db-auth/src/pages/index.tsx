@@ -36,7 +36,7 @@ export default function Home() {
         <div className='flex flex-row justify-between p-4 w-full h-[calc(100vh_-_4rem)]'>
           {/* <NotesMain /> */}
           <div className='w-80'>
-            <p>{authUser?.email}</p>
+            {/* <p>{authUser?.email}</p> */}
             {/* <LoginCheck /> */}
             <NoteOperations getSingleNote={getSingleNote} />
           </div>

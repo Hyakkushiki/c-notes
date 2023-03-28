@@ -16,10 +16,13 @@ export default function Layout({ children }: Props) {
   useEffect(() => {
     console.log("layout ::", "loading:", loading, "authUser:", authUser);
 
+    // if (!loading && !!authUser) router.push("/");
+    if (!!authUser) return;
+
     if (!loading) {
       // Authentication state is still loading
       if (!!authUser) {
-        router.push("/");
+        router.push("/notesPage");
       } else {
         // router.push("/auth/loginPage");
       }
