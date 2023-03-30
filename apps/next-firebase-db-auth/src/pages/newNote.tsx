@@ -71,12 +71,16 @@ export default function NoteOperations(props: {
     getNotes();
   }, []);
 
+  const styles = {
+    button: "w-60 h-8 cursor-pointer bg-red-500 text-white border-[]",
+  };
+
   return (
     <>
       <div className="">
         <button
           onClick={inputToggle}
-          className="w-60 h-8 cursor-pointer bg-[$dark-red] text-[$whiteSmoke] border-[]"
+          className={`${styles.button}`}
         >
           Add a New Note
         </button>
@@ -85,7 +89,7 @@ export default function NoteOperations(props: {
       {isInputVisible ? (
         <div className="">
           <input
-            className="w-60 h-8 border mx-0 my-[5px] rounded-[5px] border-solid border-[$gray]"
+            className="w-60 h-8 border mx-0 my-[5px] rounded-[5px] border-solid border-gray-300"
             placeholder="Enter the Title.."
             onChange={(e) => setNoteTitle(e.target.value)}
             value={noteTitle}
@@ -101,7 +105,7 @@ export default function NoteOperations(props: {
 
       <button
         onClick={saveNote}
-        className="w-60 h-8 cursor-pointer bg-[$dark-red] text-[$whiteSmoke] border-[]"
+        className={`${styles.button}`}
       >
         Save Note
       </button>
@@ -111,7 +115,7 @@ export default function NoteOperations(props: {
           return (
             <div
               key={note.id}
-              className="border border-[$dark-red] w-60 text-center cursor-pointer mt-2 rounded-[10px] border-solid"
+              className="border border-red-600 w-60 text-center cursor-pointer mt-2 rounded-[10px] border-solid"
               onClick={() => props.getSingleNote(note.id)}
             >
               <h4>{note.noteTitle}</h4>

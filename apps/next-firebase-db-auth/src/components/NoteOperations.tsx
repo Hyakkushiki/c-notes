@@ -71,18 +71,25 @@ export default function NoteOperations(props: {
     getNotes();
   }, []);
 
+  const styles = {
+    button: "w-60 h-8 cursor-pointer bg-red-500 text-white border-[]",
+  };
+
   return (
     <>
-      <div className=''>
-        <button onClick={inputToggle} className='w-60 h-8 cursor-pointer bg-[$dark-red] text-[$whiteSmoke] border-[]'>
+      <div className="">
+        <button
+          onClick={inputToggle}
+          className={`${styles.button}`}
+        >
           Add a New Note
         </button>
       </div>
 
       {isInputVisible ? (
-        <div className=''>
+        <div className="">
           <input
-            className='w-60 h-8 border mx-0 my-[5px] rounded-[5px] border-solid border-[$gray]'
+            className="w-60 h-8 border mx-0 my-[5px] rounded-[5px] border-solid border-gray-300"
             placeholder="Enter the Title.."
             onChange={(e) => setNoteTitle(e.target.value)}
             value={noteTitle}
@@ -92,20 +99,23 @@ export default function NoteOperations(props: {
         <></>
       )}
 
-      <div className='w-60'>
+      <div className="w-60">
         <ReactQuill theme="snow" onChange={addDesc} value={noteDesc} />
       </div>
 
-      <button onClick={saveNote} className='w-60 h-8 cursor-pointer bg-[$dark-red] text-[$whiteSmoke] border-[]'>
+      <button
+        onClick={saveNote}
+        className={`${styles.button}`}
+      >
         Save Note
       </button>
 
-      <div className=''>
+      <div className="">
         {notesArray.map((note) => {
           return (
             <div
               key={note.id}
-              className='border border-[$dark-red] w-60 text-center cursor-pointer mt-2 rounded-[10px] border-solid'
+              className="border border-red-600 w-60 text-center cursor-pointer mt-2 rounded-[10px] border-solid"
               onClick={() => props.getSingleNote(note.id)}
             >
               <h4>{note.noteTitle}</h4>

@@ -17,7 +17,7 @@ export default function Layout({ children }: Props) {
     console.log("layout ::", "loading:", loading, "authUser:", authUser);
 
     // if (!loading && !!authUser) router.push("/");
-    if (!!authUser) return;
+    // if (!!authUser) return;
 
     if (!loading) {
       // Authentication state is still loading
@@ -26,6 +26,8 @@ export default function Layout({ children }: Props) {
       } else {
         // router.push("/auth/loginPage");
       }
+    } else {
+      router.push("/auth/loginPage");
     }
   }, [authUser, loading]);
 

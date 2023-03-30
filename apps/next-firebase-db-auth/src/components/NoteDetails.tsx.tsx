@@ -104,7 +104,7 @@ export default function NoteDetails(props: { ID: string | null }) {
           </div>
           <button
             onClick={() => editNote(singleNote.id)}
-            className='w-60 h-8 cursor-pointer bg-[$dark-red] text-[$whiteSmoke] border-[]'
+            className='w-60 h-8 cursor-pointer bg-red-500 text-white border-[]'
           >
             Update Note
           </button>
