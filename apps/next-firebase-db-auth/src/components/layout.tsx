@@ -26,9 +26,10 @@ export default function Layout({ children }: Props) {
       } else {
         // router.push("/auth/loginPage");
       }
-    } else {
-      router.push("/auth/loginPage");
-    }
+    } 
+    // else {
+    //   router.push("/auth/loginPage");
+    // }
   }, [authUser, loading]);
 
   return (
