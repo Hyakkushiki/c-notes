@@ -2,7 +2,7 @@ import { useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 import { UseAuthContext } from "../../context/AuthUserProvider";
 import { firebaseAuth } from "../../lib/firebaseConfig";
-import LoginPage from "./loginPage";
+// import LoginPage from "./loginPage";
 
 // import LoginPage from "./loginPage";
 

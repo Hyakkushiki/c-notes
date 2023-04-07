@@ -1,41 +1,38 @@
-import { create } from 'zustand'
-import { devtools, persist,combine } from 'zustand/middleware'
+import { create } from "zustand";
+import {
+  devtools,
+  persist,
+  combine,
+  createJSONStorage,
+} from "zustand/middleware";
 
-import ITodo from './types/ITodo'
-import createTodoSlice from './slices/todoSlice'
+import { ITasks } from "./types/ITask";
+import { createTaskSlice } from "./slices/taskSlice";
+import { FirebaseAuthType, createAuthSlice } from "./slices/authSlice";
 
-
-interface BearState {
-  bears: number
-  increase: (by: number) => void
-}
-
-// const useBearStore = create<BearState>()(
-//   devtools(
-//     persist(
-//       (set) => ({
-//         bears: 0,
-//         increase: (by) => set((state) => ({ bears: state.bears + by })),
-//       }),
-//       {
-//         name: 'bear-storage',
-//       }
-//     )
+// const useBearStore = create(
+//     combine({ bears: 0 }, (set) => ({
+//       increase: (by: number) => set((state) => ({ bears: state.bears + by })),
+//     }))
 //   )
-// )
-const useBearStore = create(
-    combine({ bears: 0 }, (set) => ({
-      increase: (by: number) => set((state) => ({ bears: state.bears + by })),
-    }))
+
+export const useStore = create<ITasks & FirebaseAuthType>()(
+  devtools(
+    persist(
+      (...a) => ({
+        ...createTaskSlice(...a),
+        ...createAuthSlice(...a),
+      }),
+      {
+        name: "combined-store", // Name of the persisted store
+        version: 1, // Version of the persisted store (useful for migrations)
+        storage: createJSONStorage(() => sessionStorage), // Storage mechanism to use (default is localStorage)
+      }
+    )
   )
+);
 
-
-
-// const useStore = create<ITodo>()((...a) =>({
-//     ...createTodoSlice(...a)
-// }))
-
-export default useBearStore;
+export default useStore;
 
 // https://github.com/pmndrs/zustand/tree/main/docs/guides
 // https://github.com/pmndrs/zustand/blob/main/docs/guides/slices-pattern.md

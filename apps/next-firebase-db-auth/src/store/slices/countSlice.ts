@@ -1,7 +1,6 @@
 import { StateCreator } from "zustand";
-import ITodo from "../types/ITodo";
 
-// // add 
+// // add
 // const countSlice: StateCreator<ITodo> = (set, get)=>({
 //     todos: ['create','next js app','using typescript'],
 //     addTodo(todo: string){

@@ -5,6 +5,8 @@ import { useRouter } from "next/router";
 import { UseAuthContext } from "../../context/AuthUserProvider";
 // import { firebaseAuth } from "../../lib/firebaseConfig";
 
+import useStore from "@/store/useStore";
+
 import { UserCredential } from "firebase/auth";
 
 export default function LoginPage() {
@@ -12,41 +14,86 @@ export default function LoginPage() {
   const [password, setPassword] = useState("123456");
   const [error, setError] = useState(null);
   const router = useRouter();
-  const { SignInWithEmailAndPassword, authUser, loading } = UseAuthContext();
+  // const { SignInWithEmailAndPassword, authUser, loading } = UseAuthContext();
   // const { authUser, loading, signOut } = UseAuth();
 
+  const loginUser = useStore((state) => state.loginUser);
+  const currentUser = useStore((state) => state.currentUser);
+  const loading = useStore((state) => state.loading);
+
+  console.log("currentUser-loginpage:", currentUser);
+  console.log("loading-loginpage:", loading);
+  let yy:UserCredential = {} as UserCredential
+
   const onSubmit = () => {
-    // event: FormEvent<HTMLFormElement>
-    // setError(null);
-    SignInWithEmailAndPassword(email, password)
-      .then((userCredential: UserCredential) => {
-        console.log(
-          "the returned user obj::",
-          userCredential.user.email,
-          userCredential.user.uid,
-          userCredential.user.photoURL
-        );
-        const user = userCredential.user
-        router.push("/");
-      })
-      .catch((error: any) => {
-        console.log(
-          error.code,
-          "|",
-          error.message,
-          "|",
-          email,
-          "|",
-          password,
-          "authUser",
-          authUser,
-          "loading",
-          loading
-        );
-        setError(error.message);
-        // router.push("/poo");
-      });
-    // event.preventDefault();
+    // // event: FormEvent<HTMLFormElement>
+    // // setError(null);
+    // SignInWithEmailAndPassword(email, password)
+    //   .then((userCredential: UserCredential) => {
+    //     console.log(
+    //       "the returned user obj::",
+    //       userCredential.user.email,
+    //       userCredential.user.uid,
+    //       userCredential.user.photoURL
+    //     );
+    //     const user = userCredential.user
+    //     router.push("/");
+    //   })
+    //   .catch((error: any) => {
+    //     console.log(
+    //       error.code,
+    //       "|",
+    //       error.message,
+    //       "|",
+    //       email,
+    //       "|",
+    //       password,
+    //       "authUser",
+    //       authUser,
+    //       "loading",
+    //       loading
+    //     );
+    //     setError(error.message);
+    //     // router.push("/poo");
+    //   });
+    // // event.preventDefault();
+
+    // loginUser(email, password)
+    //   .then((userCredential: UserCredential) => {
+    //     console.log(
+    //       "the returned user obj::",
+    //       userCredential.user.email,
+    //       userCredential.user.uid,
+    //       userCredential.user.photoURL
+    //     );
+    //     const user = userCredential.user
+    //     router.push("/");
+    //   })
+    //   .catch((error: any) => {
+    //     console.log(
+    //       error.code,
+    //       "|",
+    //       error.message,
+    //       "|",
+    //       email,
+    //       "|",
+    //       password,
+    //       "loading",
+    //       loading
+    //     );
+    //     setError(error.message);
+    //     // router.push("/poo");
+    //   });
+
+    //  loginUser(email, password).then((userCredential: UserCredential)=>{
+    //   yy = userCredential
+
+    //   console.log('yabayabayabayaba 2', userCredential)
+    //   return userCredential
+    // });
+    // console.log('yabayabayabayaba', yy)
+
+    loginUser(email, password)
   };
 
   return (
