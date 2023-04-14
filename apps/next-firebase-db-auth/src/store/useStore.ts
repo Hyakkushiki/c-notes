@@ -27,6 +27,13 @@ export const useStore = create<ITasks & FirebaseAuthType>()(
         name: "combined-store", // Name of the persisted store
         version: 1, // Version of the persisted store (useful for migrations)
         storage: createJSONStorage(() => sessionStorage), // Storage mechanism to use (default is localStorage)
+        // partialize: (state) => ({ addTask: state.addTask }),
+        partialize: (state) =>
+          Object.fromEntries(
+            Object.entries(state).filter(
+              ([key]) => !["currentUser"].includes(key)
+            )
+          ),
       }
     )
   )

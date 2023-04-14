@@ -37,7 +37,7 @@ export default function Home() {
           {/* <NotesMain /> */}
           <div className='w-80'>
             {/* <p>{authUser?.email}</p> */}
-            {/* <LoginCheck /> */}
+            <LoginCheck />
             <NoteOperations getSingleNote={getSingleNote} />
           </div>
           <div className=''>

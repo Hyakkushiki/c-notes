@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -93,9 +93,27 @@ export default function LoginPage() {
     // });
     // console.log('yabayabayabayaba', yy)
 
+    console.log('loginUser submitted:')
     loginUser(email, password)
   };
 
+  useEffect(()=>{
+
+    if (!loading) {
+      // Authentication state is still loading
+      if (!!currentUser) {
+        // console.log("loading:::", loading, "authUser:::", authUser);
+        // User is signed in
+        router.push("/");
+      } 
+      // else {
+      //   // console.log("loading:2::", loading, "authUser:::", authUser);
+      //   // User is signed out
+      //   router.push("/auth/loginPage");
+      // }
+    }
+  })
+,[currentUser, loading]
   return (
     <div className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">

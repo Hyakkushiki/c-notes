@@ -22,12 +22,11 @@ export type FirebaseAuthType = {
   status: "unknown" | "anonymous" | "authenticated";
 
   // loginUser: (email: string, password: string) => Promise<UserCredential>; // typeof Firebase.signInWithEmailAndPassword;
-  loginUser: (email: string, password: string) => void // Promise<UserCredential>; // typeof Firebase.signInWithEmailAndPassword;
+  loginUser: (email: string, password: string) => void; // Promise<UserCredential>; // typeof Firebase.signInWithEmailAndPassword;
 
   createUser: (email: string, password: string) => Promise<UserCredential>; //typeof Firebase.createUserWithEmailAndPassword;
 
   signOut: () => Promise<void>; // typeof Firebase.signOut;
-
 
   clearAuthState: () => void;
 
@@ -58,8 +57,6 @@ export type FirebaseAuthType = {
 //   )
 // );
 
-
-
 // const authStateChanged = async (authState: any) => { // UserCredential
 //   // alert('inside authStateChanged, in useFirebaseAuth '+ ' authState: ' + authState)
 //   // console.log('inside authStateChanged, in useFirebaseAuth', 'authState:',authState.email,authState.uid, !authState, !!authState)
@@ -75,10 +72,6 @@ export type FirebaseAuthType = {
 //   setAuthUser(formattedUser);
 //   setLoading(false);
 // };
-
-
-
-
 
 export const createAuthSlice: StateCreator<FirebaseAuthType> = (set, get) => ({
   currentUser: null,
@@ -96,13 +89,19 @@ export const createAuthSlice: StateCreator<FirebaseAuthType> = (set, get) => ({
   // }))
 
   loginUser: async (email, password) => {
+    console.log("loginUser in zustand came:");
     // return signInWithEmailAndPassword(firebaseAuth, email, password);
-    const userCredential = await signInWithEmailAndPassword(firebaseAuth, email, password);
+    const userCredential = await signInWithEmailAndPassword(
+      firebaseAuth,
+      email,
+      password
+    );
     const uid = userCredential.user.uid;
     const emailString =
       userCredential.user.email == null ? "" : userCredential.user.email;
     set({ currentUser: await { uid: uid, email: emailString } });
-    set((state) => ({loading: false}))
+    set({ status: "authenticated" });
+    set({ loading: false });
 
     // return useFirebaseAuth().SignInWithEmailAndPassword(email, password);
     // const userCredential: UserCredential =
@@ -157,11 +156,16 @@ export const createAuthSlice: StateCreator<FirebaseAuthType> = (set, get) => ({
   createUser: async (email, password) =>
     createUserWithEmailAndPassword(firebaseAuth, email, password),
 
-  signOut: async () => firebaseAuth.signOut().then(),
+  signOut: async () => {
+    // firebaseAuth.signOut().then();
+    firebaseAuth.signOut();
+    set({ currentUser: null });
+    set({ loading: true });
+  },
 
   clearAuthState: () => {
-    set((state) => ({currentUser: null}))
-    set((state) => ({loading: true}))
+    set({ currentUser: null });
+    set({ loading: true });
   },
 });
 
