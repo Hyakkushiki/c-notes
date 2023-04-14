@@ -2,6 +2,9 @@ import { UseAuthContext } from "@/context/AuthUserProvider";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
+import useStore from "@/store/useStore";
+import LoginCheck from "./loginCheck";
+
 const navigation = [
   { name: "Dashboard", href: "#", current: true },
   { name: "Team", href: "#", current: false },
@@ -14,8 +17,13 @@ const navigation = [
 // }
 
 export default function NavBar() {
+  // LoginCheck()
+
+  const currentUser = useStore((state) => state.currentUser);
+  const signOut = useStore((state) => state.signOut);
+
   const [userMenuIsOpen, setUserMenuIsOpen] = useState(false);
-  const { authUser, signOut } = UseAuthContext();
+  // const { authUser, signOut } = UseAuthContext();
 
   const navBarHeight = 5;
   // h-[${navBarHeight}rem]
@@ -27,6 +35,7 @@ export default function NavBar() {
 
   return (
     <nav className={`bg-gray-800 w-full h-14`}>
+      <LoginCheck />
       <div className={`h-full mx-auto px-2 sm:px-6 lg:px-8`}>
         <div className={`relative flex h-full items-center justify-between`}>
           <div className="absolute inset-y-0 left-0 flex items-center">
@@ -141,14 +150,14 @@ export default function NavBar() {
               >
                 {/* <a href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" id="user-menu-item-0">Your Profile</a>
                                 <a href="#" className="block px-4 py-2 text-sm text-gray-700" role="menuitem" id="user-menu-item-1">Settings</a> */}
-                {!!authUser?.email ? (
+                {!!currentUser?.email ? (
                   <p
                     onBlur={() => setUserMenuIsOpen(false)}
                     className="block px-4 py-2 text-sm text-gray-700 bg-blue-100"
                     role="menuitem"
                     id="user-menu-item-2"
                   >
-                    {authUser?.email}
+                    {currentUser?.email}
                   </p>
                 ) : (
                   <></>
@@ -171,7 +180,7 @@ export default function NavBar() {
                   role="menuitem"
                   id="user-menu-item-2"
                 >
-                  Sign out
+                  Sign out {!!currentUser ? ": " + currentUser?.email : ""}
                 </a>
               </div>
             </div>

@@ -60,7 +60,6 @@ const LoginCheck = () => {
   return (
     //Your logged in page
     <div>
-      {/* <LoginPage /> */}
       <button onClick={() => signOut()}>Sign out</button>
       <h1>No cum myere byoaah!</h1>
       <p>loading: {loading.toString()}</p>

@@ -89,16 +89,28 @@ export const createAuthSlice: StateCreator<FirebaseAuthType> = (set, get) => ({
   // }))
 
   loginUser: async (email, password) => {
-    console.log("loginUser in zustand came:");
+    console.log("loginUser in zustand came:", email, password);
     // return signInWithEmailAndPassword(firebaseAuth, email, password);
     const userCredential = await signInWithEmailAndPassword(
       firebaseAuth,
       email,
       password
-    );
+    )
+      .then((userCredential: UserCredential) => {
+        console.log(
+          "the returned user obj::",
+          userCredential.user.email,
+          userCredential.user.uid,
+          userCredential.user.photoURL
+        );
+      })
+      .catch((error: any) => {
+        console.log(error.code, "|", error.message, "|", email, "|", password);
+      });
     const uid = userCredential.user.uid;
     const emailString =
       userCredential.user.email == null ? "" : userCredential.user.email;
+    console.log("loginUser in zustand out:", uid, ": ", emailString);
     set({ currentUser: await { uid: uid, email: emailString } });
     set({ status: "authenticated" });
     set({ loading: false });
@@ -161,6 +173,7 @@ export const createAuthSlice: StateCreator<FirebaseAuthType> = (set, get) => ({
     firebaseAuth.signOut();
     set({ currentUser: null });
     set({ loading: true });
+    set({ status: "unknown" });
   },
 
   clearAuthState: () => {
