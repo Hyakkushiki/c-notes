@@ -7,7 +7,8 @@ import { UseAuthContext } from "../../context/AuthUserProvider";
 
 import useStore from "@/store/useStore";
 
-import { UserCredential } from "firebase/auth";
+import { UserCredential, signInWithEmailAndPassword, getAuth } from "firebase/auth";
+import { firebaseAuth } from "@/lib/firebaseConfig";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("email@email.com");
@@ -18,6 +19,8 @@ export default function LoginPage() {
   // const { authUser, loading, signOut } = UseAuth();
 
   const loginUser = useStore((state) => state.loginUser);
+  const redoLoginUser = useStore((state) => state.redoLoginUser);
+
   const currentUser = useStore((state) => state.currentUser);
   const loading = useStore((state) => state.loading);
 
@@ -25,7 +28,7 @@ export default function LoginPage() {
   console.log("loading-loginpage:", loading);
   let yy:UserCredential = {} as UserCredential
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     // // event: FormEvent<HTMLFormElement>
     // // setError(null);
     // SignInWithEmailAndPassword(email, password)
@@ -57,6 +60,22 @@ export default function LoginPage() {
     //     // router.push("/poo");
     //   });
     // // event.preventDefault();
+
+    await signInWithEmailAndPassword(getAuth(), email, password)
+      .then((userCredential: UserCredential) => {
+        console.log(
+          "the returned user obj::",
+          userCredential.user.email,
+          userCredential.user.uid,
+          userCredential.user.photoURL
+        );
+
+          const email =  !!userCredential.user.email ? userCredential.user.email : ""
+        // redoLoginUser(userCredential.user.uid, email)
+      })
+      .catch((error: any) => {
+        console.log(error.code, "|", error.message, "|", email, "|", password);
+      });
 
     // loginUser(email, password)
     //   .then((userCredential: UserCredential) => {
@@ -94,7 +113,8 @@ export default function LoginPage() {
     // console.log('yabayabayabayaba', yy)
 
     console.log('loginUser submitted:')
-    loginUser(email, password)
+    // loginUser(email, password)
+    // redoLoginUser()
   };
 
 //   useEffect(()=>{

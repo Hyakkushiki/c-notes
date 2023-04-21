@@ -24,6 +24,8 @@ export type FirebaseAuthType = {
   // loginUser: (email: string, password: string) => Promise<UserCredential>; // typeof Firebase.signInWithEmailAndPassword;
   loginUser: (email: string, password: string) => void; // Promise<UserCredential>; // typeof Firebase.signInWithEmailAndPassword;
 
+  redoLoginUser: (uid: string, email: string) => void; // Promise<UserCredential>; // typeof Firebase.signInWithEmailAndPassword;
+
   createUser: (email: string, password: string) => Promise<UserCredential>; //typeof Firebase.createUserWithEmailAndPassword;
 
   signOut: () => Promise<void>; // typeof Firebase.signOut;
@@ -88,14 +90,24 @@ export const createAuthSlice: StateCreator<FirebaseAuthType> = (set, get) => ({
   //   },
   // }))
 
-  loginUser: async (email, password) => {
+  redoLoginUser: (uid: string, email: string) => {
+    set((state) => ({ status: "unknown" }));
+    set((state) => ({ loading: false }));
+    set((state) => ({ currentUser: { uid: uid, email: email } }));
+  },
+
+  loginUser: (email, password) => {
     console.log("loginUser in zustand came:", email, password);
     // return signInWithEmailAndPassword(firebaseAuth, email, password);
-    const userCredential = await signInWithEmailAndPassword(
-      firebaseAuth,
-      email,
-      password
-    )
+    // let uc = {} as UserCredential;
+
+    const asyncInfoPass = (cu: User) => {
+      set((state) => ({ status: "unknown" }));
+      set((state) => ({ loading: false }));
+      set((state) => ({ currentUser: { uid: cu.uid, email: cu.email } }));
+    };
+
+    signInWithEmailAndPassword(firebaseAuth, email, password)
       .then((userCredential: UserCredential) => {
         console.log(
           "the returned user obj::",
@@ -103,17 +115,24 @@ export const createAuthSlice: StateCreator<FirebaseAuthType> = (set, get) => ({
           userCredential.user.uid,
           userCredential.user.photoURL
         );
+
+        const cu: User = {
+          uid: userCredential.user.uid,
+          email: !!userCredential.user.email ? userCredential.user.email : "",
+        };
+        asyncInfoPass(cu);
       })
       .catch((error: any) => {
         console.log(error.code, "|", error.message, "|", email, "|", password);
       });
-    const uid = userCredential.user.uid;
-    const emailString =
-      userCredential.user.email == null ? "" : userCredential.user.email;
-    console.log("loginUser in zustand out:", uid, ": ", emailString);
-    set({ currentUser: await { uid: uid, email: emailString } });
-    set({ status: "authenticated" });
-    set({ loading: false });
+
+    // const uid = uc.user.uid;
+    // const emailString = uc.user.email == null ? "" : uc.user.email;
+
+    // console.log("loginUser in zustand out:", uid, ": ", emailString);
+    // set({ currentUser: await { uid: uid, email: emailString } });
+    // set({ status: "authenticated" });
+    // set({ loading: false });
 
     // return useFirebaseAuth().SignInWithEmailAndPassword(email, password);
     // const userCredential: UserCredential =

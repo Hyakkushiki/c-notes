@@ -203,11 +203,14 @@ export default function NavBar() {
 }
 
 export const DevLogin = () => {
+  const redoLoginUser = useStore((state) => state.redoLoginUser);
   // https://firebase.google.com/docs/reference/rest/auth/#section-fetch-providers-for-email
 
   //     curl 'https://identitytoolkit.googleapis.com/v1/accounts:createAuthUri?key=[API_KEY]' \
   // -H 'Content-Type: application/json' \
   // --data-binary '{"identifier":"[user@example.com]","continueUri":"[http://localhost:8080/app]"}'
+
+  const currentUser = useStore((state) => state.currentUser);
 
   const email = "email@email.com";
   const apiKey = process.env.NEXT_PUBLIC_FIREBASE_PUBLIC_API_KEY;
@@ -238,8 +241,21 @@ export const DevLogin = () => {
   async function getresponse(data: {} | undefined) {
     postData(signInWithEmailPassURL, data)
       .then((res) => {
-        console.log(res);
-        // console.log(res.body);
+        // console.log(res);
+        // console.log(res.email);
+
+        redoLoginUser(res.localId, res.email);
+
+        // {
+        //   "kind": "identitytoolkit#VerifyPasswordResponse",
+        //   "localId": "hV8zmJzkImXsfSzzAZOqrHQOgJ73",
+        //   "email": "email@email.com",
+        //   "displayName": "",
+        //   "idToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjE2ZGE4NmU4MWJkNTllMGE4Y2YzNTgwNTJiYjUzYjUzYjE4MzA3NzMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vcGVyc29uLWRhdGFiYXNlLXRlc3QtZjY4NTMiLCJhdWQiOiJwZXJzb24tZGF0YWJhc2UtdGVzdC1mNjg1MyIsImF1dGhfdGltZSI6MTY4MjA2NzI2MywidXNlcl9pZCI6ImhWOHptSnprSW1Yc2ZTenpBWk9xckhRT2dKNzMiLCJzdWIiOiJoVjh6bUp6a0ltWHNmU3p6QVpPcXJIUU9nSjczIiwiaWF0IjoxNjgyMDY3MjYzLCJleHAiOjE2ODIwNzA4NjMsImVtYWlsIjoiZW1haWxAZW1haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImVtYWlsQGVtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.ctbO_JnZnEgB5Xd1Pu181sJ0tZjwUPhMV6yLsXPfEnS65qouUrkCxJRaE23IzSO4eDPLB-G_z5hVcKeRNbjRpzV4OY7gWlh0sCmL71_CzFRPAYImUeqLyYpWW6gV4XvXKvJXk40P1CJhr6tD5QOK3VlXP0PSy64iBICS6Gv2GEIarx19u_LlXDXdz1omZcU-DdLKp18QJhXOwhCqdKklBHQZy4D1FrkkVdXvBk34zq-KBtqDcvqTh7I9j_nJ2B0qHPEwQXUer2UdgOKEvM8uqVOcMJMA234_-xOW3BcmCBq2mpNKmBMm7EMZHxO9bQEYJgkV7-ox4fnpfF-9UxJgTw",
+        //   "registered": true,
+        //   "refreshToken": "APJWN8fWLYgbdIWh6DvJn5CeOTrpFlaMSgGcbovtli9CAzrSnthMQDDerLs-jBi0La_jB3RmgiFhYFF37sayw8b6qrucdrn4amnIB0Bz5ixqMt6lmfMiejg-RKTflCta_vzQZdUtnum48YhYWEZEvcBQAPJWP6Ib3FgJZHp_ue8aD9925KgzrO53E9LQsn9vko-HOYhSTywzBWHX5cDUlxwW4AzSPeXdjgG1xWM4TRSQP_zuechlaiY",
+        //   "expiresIn": "3600"
+        // }
       })
       .catch((e) => {
         console.log("error", e);
@@ -247,7 +263,10 @@ export const DevLogin = () => {
   }
 
   return (
-    <div>
+    <div className="flex">
+      <div className="w-full text-white bg-blue-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+        {!!currentUser ? ": " + currentUser?.email : "not logged in.."}
+      </div>
       <button
         onClick={() => getresponse(emailSignInData)}
         type="submit"
